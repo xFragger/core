@@ -159,7 +159,7 @@ class Util {
 	 * @param string $text the text content for the element
 	 */
 	public static function addHeader( $tag, $attributes, $text='') {
-		\OC_TemplateLayout::addHeader( $tag, $attributes, $text );
+		\OC_TemplateLayout::addLayoutHeader( $tag, $attributes, $text );
 	}
 
 	/**

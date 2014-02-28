@@ -100,7 +100,7 @@ class OC_TemplateLayout extends OC_Template {
 				$this->append( 'cssfiles', $web.'/'.$file . $versionParameter);
 			}
 		}
-		$page->assign('headers', self::$headers);
+		$this->assign('headers', self::$headers);
 	}
 
 	/**
@@ -148,7 +148,7 @@ class OC_TemplateLayout extends OC_Template {
 	 * @param string $text the text content for the element
 	 * @return void
 	 */
-	public static function addHeader( $tag, $attributes, $text='') {
+	public static function addLayoutHeader( $tag, $attributes, $text='') {
 		self::$headers[] = array(
 			'tag'=>$tag,
 			'attributes'=>$attributes,
