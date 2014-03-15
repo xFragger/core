@@ -59,6 +59,7 @@ class OC_TemplateLayout extends OC_Template {
 			$this->assign( 'user_uid', OC_User::getUser() );
 			$this->assign( 'appsmanagement_active', strpos(OC_Request::requestUri(), OC_Helper::linkToRoute('settings_apps')) === 0 );
 			$this->assign('enableAvatars', \OC_Config::getValue('enable_avatars', true));
+			$this->assign('userAvatarSet', \OC_Helper::userAvatarSet(OC_User::getUser()));
 		} else if ($renderas == 'guest' || $renderas == 'error') {
 			parent::__construct('core', 'layout.guest');
 		} else {

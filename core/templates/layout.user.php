@@ -52,7 +52,14 @@
 			<div id="settings" class="svg">
 				<span id="expand" tabindex="0" role="link">
 					<?php if ($_['enableAvatars']): ?>
-					<div class="avatardiv"></div>
+					<div
+						class="avatardiv<?php if ($_['userAvatarSet']) { p(" avatardiv-shown"); } ?>"
+						<?php if ($_['userAvatarSet']) { print_unescaped("style=\"height: 32px; width: 32px;\""); } ?>
+					>
+						<?php if ($_['userAvatarSet']): ?>
+							<img src="<?php print_unescaped(link_to('', 'index.php').'/avatar/'.$_['user_displayname'].'/32?requesttoken='.$_['requesttoken']); ?>">
+						<?php endif; ?>
+					</div>
 					<?php endif; ?>
 					<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 					<img class="svg" alt="" src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" />
