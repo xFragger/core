@@ -41,7 +41,7 @@ OC.MountConfig={
 			}
 		});
 		if ($('#externalStorage').data('admin') === true) {
-			var multiselect = $(tr).find('.chzn-select').val();
+			var multiselect = $(tr).find('.applicableUsers').select2('val');
 			if (multiselect == null) {
 				return false;
 			}
@@ -161,8 +161,133 @@ OC.MountConfig={
 };
 
 $(document).ready(function() {
-	$('.chzn-select').chosen();
+	//initialize hidden input field with list of users and groups
+	$('#externalStorage').find('tr:not(#addMountPoint)').each(function(i,tr) {
+		var applicable = $(tr).find('.applicable');
+		if (applicable.length > 0) {
+			var groups = applicable.data('applicable-groups');
+			var groupsId = [];
+			$.each(groups, function () {
+				groupsId.push(this+"(group)");
+			});
+			var users = applicable.data('applicable-users');
+			$(tr).find('.applicableUsers').val(groupsId.concat(users).join(','));
+		}
+	});
+	//TODO load current applicable users for an existing mount
+	var userListLimit = 10;
+	$('.applicableUsers').select2({
+		placeholder: t('files_external', 'No user or group'),
+		allowClear: true,
+		multiple: true,
+		//minimumInputLength: 2,
+		ajax: {
+			url: OC.generateUrl('/settings/ajax/userlist'),
+			dataType: 'json',
+			quietMillis: 100,
+			data: function (term, page) { // page is the one-based page number tracked by Select2
+				return {
+					filter: term, //search term
+					limit: userListLimit, // page size
+					offset: userListLimit*(page-1), // page number starts with 0
+				};
+			},
+			results: function (data, page) {
+				if (data.status === "success") {
+					var results = [];
+					results.push({name:'all', displayname:t('files_external', 'All Users')});
 
+					var groups = [];
+					var userObjects = [];
+					$.each(data.data, function(i,e){
+						if (e.groups && groups.indexOf(e.groups) < 0) {
+							groups.push(e.groups);
+						}
+						e.type = 'user';
+						userObjects.push(e);
+					});
+					var groupObjects = [];
+					$.each(groups, function(i,e){
+						groupObjects.push({name:e+'(group)', displayname:e, type:'group'});
+					});
+
+					if (groupObjects.length > 0) {
+						results.push({displayname:t('files_external', 'Groups'), children:groupObjects});
+					}
+
+					if (userObjects.length > 0) {
+						results.push({displayname:t('files_external', 'Users'), children:userObjects});
+					}
+
+					var more = data.data.length >= userListLimit;
+					return {results: results, more: more};
+				} else {
+					//FIXME add error handling
+				}
+			}
+		},
+		initSelection: function(element, callback) {
+			
+			var promises = [];
+		
+			var results = [];
+						
+			$(element.val().split(",")).each(function (i,userId) {
+				var def = new $.Deferred();
+				promises.push(def.promise());
+				
+				var pos = userId.indexOf('(group)');
+				if (pos !== -1) {
+					//add as group
+					results.push({name:userId, displayname:userId.substr(0, pos)+' '+t('files_external', '(group)')});
+					def.resolve();
+				} else {
+					$.ajax(OC.generateUrl('/settings/ajax/userlist'), {
+						data: {
+							filter: userId
+						},
+						dataType: "json"
+					}).done(function(data) {
+						if (data.status === "success") {
+							if (data.data.length > 0) {
+								var user = data.data[0];
+								user.type = 'user';
+								results.push(user);
+							}
+							def.resolve();
+						} else {
+							//FIXME add error handling
+						}
+					});
+				}
+			});
+			$.when.apply(undefined, promises).then(function(){
+				if (results.length > 0) {
+					callback(results);
+				} else {
+					callback([{name:'all', displayname:t('files_external', 'All Users')}]);
+				}
+			});
+		},
+		id: function(element) {
+			return element.name;
+		},
+		//TODO add avatar image to results
+		formatResult: function (element) {
+			var markup = '<span title="'+element.name+'">'+element.displayname+'</span>';
+			return markup;
+		},
+		formatSelection: function (element) {
+			if (element.type === 'group') {
+				return '<span title="'+element.name+'">'+element.displayname+' '+t('files_external', '(group)')+'</span>';
+			} else {
+				return '<span title="'+element.name+'">'+element.displayname+'</span>';
+			}
+		},
+		//dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller 
+		escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+	});
+	
 	$('#externalStorage').on('change', '#selectBackend', function() {
 		var tr = $(this).parent().parent();
 		$('#externalStorage tbody').append($(tr).clone());
@@ -204,11 +329,6 @@ $(document).ready(function() {
 				return false;
 			}
 		});
-		// Reset chosen
-		var chosen = $(tr).find('.applicable select');
-		chosen.parent().find('div').remove();
-		chosen.removeAttr('id').removeClass('chzn-done').css({display:'inline-block'});
-		chosen.chosen();
 		$(tr).find('td').last().attr('class', 'remove');
 		$(tr).find('td').last().removeAttr('style');
 		$(tr).removeAttr('id');

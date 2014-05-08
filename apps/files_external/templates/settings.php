@@ -87,9 +87,10 @@
 													print_unescaped(json_encode($mount['applicable']['groups'])); ?>'
 					data-applicable-users='<?php if (isset($mount['applicable']['users']))
 													print_unescaped(json_encode($mount['applicable']['users'])); ?>'>
-						<select class="chzn-select"
-							multiple style="width:20em;"
-							data-placeholder="<?php p($l->t('No user or group')); ?>">
+					<input type="hidden" class="applicableUsers" style="width:20em;" value="all"/>
+						<!--
+						<select class="select2"
+							multiple style="width:20em;">
 							<option value="all"
 								<?php if (empty($mount['class']) || (isset($mount['applicable']['users']) && in_array('all', $mount['applicable']['users']))) print_unescaped('selected="selected"');?> >
 								<?php p($l->t('All Users')); ?>
@@ -111,6 +112,7 @@
 							<?php endforeach; ?>
 							</optgroup>
 						</select>
+						-->
 					</td>
 				<?php endif; ?>
 				<td <?php if (isset($mount['mountpoint'])): ?>class="remove"

@@ -23,9 +23,13 @@
 OC_Util::checkAdminUser();
 
 OCP\Util::addScript('files_external', 'settings');
-OCP\Util::addscript('3rdparty', 'chosen/chosen.jquery.min');
 OCP\Util::addStyle('files_external', 'settings');
-OCP\Util::addStyle('3rdparty', 'chosen/chosen');
+
+OCP\Util::addScript('files_external', '../3rdparty/select2/select2');
+OCP\Util::addStyle('files_external', '../3rdparty/select2/select2');
+
+//OCP\Util::addscript('3rdparty', 'chosen/chosen.jquery.min');
+//OCP\Util::addStyle('3rdparty', 'chosen/chosen');
 
 $backends = OC_Mount_Config::getBackends();
 $personal_backends = array();
