@@ -187,7 +187,7 @@
 				quietMillis: 100,
 				data: function (term, page) { // page is the one-based page number tracked by Select2
 					return {
-						filter: term, //search term
+						pattern: term, //search term
 						limit: userListLimit, // page size
 						offset: userListLimit*(page-1) // page number starts with 0
 					};
@@ -244,7 +244,7 @@
 					} else {
 						$.ajax(OC.generateUrl('/settings/ajax/userlist'), {
 							data: {
-								filter: userId
+								pattern: userId
 							},
 							dataType: "json"
 						}).done(function(data) {

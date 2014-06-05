@@ -42,11 +42,6 @@ if (isset($_GET['pattern']) && !empty($_GET['pattern'])) {
 } else {
 	$pattern = '';
 }
-if (isset($_GET['filter']) && !empty($_GET['filter'])) {
-	$pattern = $_GET['filter'];
-} else {
-	$pattern = '';
-}
 $users = array();
 $userManager = \OC_User::getManager();
 if (OC_User::isAdminUser(OC_User::getUser())) {
