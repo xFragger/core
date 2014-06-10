@@ -6,9 +6,6 @@
  */
 
 class OC_Util {
-	public static $scripts=array();
-	public static $styles=array();
-	public static $headers=array();
 	private static $rootMounted=false;
 	private static $fsSetup=false;
 
@@ -256,15 +253,7 @@ class OC_Util {
 	 * @return void
 	 */
 	public static function addScript( $application, $file = null ) {
-		if ( is_null( $file )) {
-			$file = $application;
-			$application = "";
-		}
-		if ( !empty( $application )) {
-			self::$scripts[] = "$application/js/$file";
-		} else {
-			self::$scripts[] = "js/$file";
-		}
+		\OC_TemplateLayout::addScript( $application, $file );
 	}
 
 	/**
@@ -275,15 +264,7 @@ class OC_Util {
 	 * @return void
 	 */
 	public static function addStyle( $application, $file = null ) {
-		if ( is_null( $file )) {
-			$file = $application;
-			$application = "";
-		}
-		if ( !empty( $application )) {
-			self::$styles[] = "$application/css/$file";
-		} else {
-			self::$styles[] = "css/$file";
-		}
+		\OC_TemplateLayout::addStyle( $application, $file );
 	}
 
 	/**
@@ -294,11 +275,7 @@ class OC_Util {
 	 * @return void
 	 */
 	public static function addHeader( $tag, $attributes, $text='') {
-		self::$headers[] = array(
-			'tag'=>$tag,
-			'attributes'=>$attributes,
-			'text'=>$text
-		);
+		\OC_TemplateLayout::addHeader( $tag, $attributes, $text );
 	}
 
 	/**

@@ -140,7 +140,7 @@ class Util {
 	 * @param string $file
 	 */
 	public static function addStyle( $application, $file = null ) {
-		\OC_Util::addStyle( $application, $file );
+		\OC_TemplateLayout::addStyle( $application, $file );
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Util {
 	 * @param string $file
 	 */
 	public static function addScript( $application, $file = null ) {
-		\OC_Util::addScript( $application, $file );
+		\OC_TemplateLayout::addScript( $application, $file );
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Util {
 	 * @param string $text the text content for the element
 	 */
 	public static function addHeader( $tag, $attributes, $text='') {
-		\OC_Util::addHeader( $tag, $attributes, $text );
+		\OC_TemplateLayout::addHeader( $tag, $attributes, $text );
 	}
 
 	/**
