@@ -413,7 +413,30 @@ OC.Upload = {
 						data.textStatus = 'servererror';
 						data.errorThrown = result[0].data.message; // error message has been translated on server
 						fu._trigger('fail', e, data);
-					}
+					} else { // Successful upload
+					  // Checking that the uploaded file is the last one
+            if (data.files[0] == data.originalFiles[data.originalFiles.length - 1]) {            
+              var elem = $('tr[data-id="'+result[0].id+'"]'); // File list element
+              var elemOffset = elem.offset().top;
+              var currentOffset = $('#app-content').scrollTop(); // Vertical offset
+              
+              var additionalOffset = $('#controls').height()+$("#header").height();
+              
+              // Actual animation
+              $('#app-content').animate({
+                // Scrolling to the top of the new element
+                scrollTop: currentOffset + elemOffset - additionalOffset
+              }, {
+                duration: 500,
+                complete: function() { 
+                  // Light yellow blink
+                  elem.animate({ backgroundColor: "#FFFF70"}, 700);
+                  elem.animate({ backgroundColor: "#FFFFFF"}, 700); 
+                }
+              });
+                          
+            }
+          }
 				},
 				/**
 				 * called after last upload
