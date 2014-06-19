@@ -420,7 +420,7 @@ OC.Upload = {
               var elemOffset = elem.offset().top;
               var currentOffset = $('#app-content').scrollTop(); // Vertical offset
               
-              var additionalOffset = $('#controls').height()+$("#header").height();
+              var additionalOffset = $('#controls').height() + $("#header").height();
               
               // Actual animation
               $('#app-content').animate({
@@ -430,8 +430,8 @@ OC.Upload = {
                 duration: 500,
                 complete: function() { 
                   // Light yellow blink
-                  elem.animate({ backgroundColor: "#FFFF70"}, 700);
-                  elem.animate({ backgroundColor: "#FFFFFF"}, 700); 
+                  elem.animate({backgroundColor: "#FFFF70"}, 700);
+                  elem.animate({backgroundColor: "#FFFFFF"}, 700); 
                 }
               });
                           
