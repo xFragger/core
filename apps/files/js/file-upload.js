@@ -415,17 +415,23 @@ OC.Upload = {
 						fu._trigger('fail', e, data);
 					} else { // Successful upload
 					  // Checking that the uploaded file is the last one
-            if (data.files[0] == data.originalFiles[data.originalFiles.length - 1]) {            
-              var elem = $('tr[data-id="'+result[0].id+'"]'); // File list element
-              var elemOffset = elem.offset().top;
-              var currentOffset = $('#app-content').scrollTop(); // Vertical offset
+            if (data.files[0] == data.originalFiles[data.originalFiles.length - 1]) {
+              var elem = FileList.findFileEl(data.files[0]["name"]);
+              var elemOffset;
               
+              // Displays the new element in the FileList
+              while((elemOffset = elem.offset()) === undefined) {
+                FileList._nextPage(false);
+                elem = FileList.findFileEl(data.files[0]["name"]);
+              }
+              
+              var currentOffset = $('#app-content').scrollTop(); // Vertical offset
               var additionalOffset = $('#controls').height() + $("#header").height();
               
               // Actual animation
               $('#app-content').animate({
                 // Scrolling to the top of the new element
-                scrollTop: currentOffset + elemOffset - additionalOffset
+                scrollTop: currentOffset + elemOffset.top - additionalOffset
               }, {
                 duration: 500,
                 complete: function() { 
@@ -690,7 +696,7 @@ OC.Upload = {
 								}
 							});
 							eventSource.listen('success', function(data) {
-								var file = data;
+							  var file = data;
 								$('#uploadprogressbar').fadeOut();
 
 								FileList.add(file, {hidden: hidden, animate: true});
