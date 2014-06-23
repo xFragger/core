@@ -21,10 +21,16 @@ class ConnectionFactory {
 	* \Doctrine\DBAL\DriverManager::getConnection().
 	*/
 	protected $defaultConnectionParams = array(
-		'mssql' => array(
+		'mssqldbo' => array(
 			'adapter' => '\OC\DB\AdapterSQLSrv',
 			'charset' => 'UTF8',
 			'driverClass' =>  '\Realestate\MssqlBundle\Driver\PDODblib\Driver',
+			'wrapperClass' => 'OC\DB\Connection',
+		),
+		'mssql' => array(
+			'adapter' => '\OC\DB\AdapterSQLSrv',
+			'charset' => 'UTF8',
+			'driver' =>  'pdo_sqlsrv',
 			'wrapperClass' => 'OC\DB\Connection',
 		),
 		'mysql' => array(
@@ -83,7 +89,7 @@ class ConnectionFactory {
 			case 'oci':
 				$eventManager->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\OracleSessionInit);
 				break;
-			case 'mssql':
+			case 'mssqldbo':
 				$eventManager->addEventSubscriber(new SQLSessionInit('SET ANSI_NULLS ON
 SET ANSI_PADDING ON
 SET ANSI_WARNINGS ON

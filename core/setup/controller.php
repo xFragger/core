@@ -95,6 +95,7 @@ class Controller {
 		$hasPostgreSQL = is_callable('pg_connect');
 		$hasOracle = is_callable('oci_connect');
 		$hasMSSQL = is_callable('sqlsrv_connect');
+		$hasMSSQLDbo = is_callable('mssql_connect');
 		$databases = array();
 		if ($hasSQLite) {
 			$databases['sqlite'] = 'SQLite';
@@ -110,6 +111,9 @@ class Controller {
 		}
 		if ($hasMSSQL) {
 			$databases['mssql'] = 'MS SQL';
+		}
+		if ($hasMSSQLDbo) {
+			$databases['mssqldbo'] = 'MS SQL';
 		}
 		$datadir = \OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data');
 		$vulnerableToNullByte = false;
@@ -150,7 +154,7 @@ class Controller {
 			'hasMySQL' => $hasMySQL,
 			'hasPostgreSQL' => $hasPostgreSQL,
 			'hasOracle' => $hasOracle,
-			'hasMSSQL' => $hasMSSQL,
+			'hasMSSQL' => $hasMSSQL | $hasMSSQLDbo,
 			'databases' => $databases,
 			'directory' => $datadir,
 			'secureRNG' => \OC_Util::secureRNGAvailable(),
