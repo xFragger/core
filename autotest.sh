@@ -137,7 +137,7 @@ cat > ./tests/autoconfig-mssql.php <<DELIM
 <?php
 \$AUTOCONFIG = array (
   'installed' => false,
-  'dbtype' => 'mssql',
+  'dbtype' => 'mssqldbo',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
   'adminpass' => 'admin',
