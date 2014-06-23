@@ -1,3 +1,7 @@
+
+/**
+ * @namespace
+ */
 OC.Share={
 	SHARE_TYPE_USER:0,
 	SHARE_TYPE_GROUP:1,

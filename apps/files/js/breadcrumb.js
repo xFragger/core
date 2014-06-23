@@ -19,10 +19,14 @@
 *
 */
 
-/* global OC */
 (function() {
 	/**
 	 * Creates an breadcrumb element in the given container
+	 *
+	 * @constructs BreadCrumb
+	 * @memberof OCA.Files
+	 *
+	 * @param {array} options options
 	 */
 	var BreadCrumb = function(options){
 		this.$el = $('<div class="breadcrumb"></div>');
@@ -122,7 +126,7 @@
 		/**
 		 * Makes a breadcrumb structure based on the given path
 		 * @param dir path to split into a breadcrumb structure
-		 * @return array of map {dir: path, name: displayName}
+		 * @return {array} map of {dir: path, name: displayName}
 		 */
 		_makeCrumbs: function(dir) {
 			var crumbs = [];

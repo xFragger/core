@@ -32,6 +32,8 @@
  * Create a new event source
  * @param {string} src
  * @param {object} [data] to be send as GET
+ *
+ * @constructs OC.EventSource
  */
 OC.EventSource=function(src,data){
 	var dataStr='';

@@ -13,6 +13,14 @@
 
 (function() {
 
+	/**
+	 * Navigation control
+	 *
+	 * @constructs Navigation
+	 * @memberof OCA.Files
+	 *
+	 * @param $el element containing the navigation
+	 */
 	var Navigation = function($el) {
 		this.initialize($el);
 	};
@@ -31,6 +39,8 @@
 
 		/**
 		 * Initializes the navigation from the given container
+		 *
+		 * @private
 		 * @param $el element containing the navigation
 		 */
 		initialize: function($el) {

@@ -13,6 +13,16 @@
 	 * The FileList class manages a file list view.
 	 * A file list view consists of a controls bar and
 	 * a file list table.
+	 * 
+	 * @constructs FileList
+	 * @memberof OCA.Files
+	 *
+	 * @param $el container element with existing markup for the #controls
+	 * and a table
+	 * @param options map of options, see other parameters
+	 * @param options.scrollContainer scrollable container, defaults to $(window)
+	 * @param options.dragOptions drag options, disabled by default
+	 * @param options.folderDropOptions folder drop options, disabled by default
 	 */
 	var FileList = function($el, options) {
 		this.initialize($el, options);
@@ -99,13 +109,7 @@
 
 		/**
 		 * Initialize the file list and its components
-		 *
-		 * @param $el container element with existing markup for the #controls
-		 * and a table
-		 * @param options map of options, see other parameters
-		 * @param scrollContainer scrollable container, defaults to $(window)
-		 * @param dragOptions drag options, disabled by default
-		 * @param folderDropOptions folder drop options, disabled by default
+		 * @private
 		 */
 		initialize: function($el, options) {
 			var self = this;
@@ -781,6 +785,7 @@
 		},
 		/**
 		 * Returns the current directory
+		 * @method getCurrentDirectory
 		 * @return current directory
 		 */
 		getCurrentDirectory: function(){
@@ -933,7 +938,10 @@
 
 		/**
 		 * Generates a preview URL based on the URL space.
-		 * @param urlSpec map with {x: width, y: height, file: file path}
+		 * @param urlSpec attributes for the URL
+		 * @param {int} urlSpec.x width
+		 * @param {int} urlSpec.y height
+		 * @param {String} urlSpec.file path to the file
 		 * @return preview URL
 		 */
 		generatePreviewUrl: function(urlSpec) {
@@ -1385,7 +1393,7 @@
 		/**
 		 * Shows the loading mask.
 		 *
-		 * @see #hideMask
+		 * @see OCA.Files.FileList#hideMask
 		 */
 		showMask: function() {
 			// in case one was shown before
@@ -1406,7 +1414,7 @@
 		},
 		/**
 		 * Hide the loading mask.
-		 * @see #showMask
+		 * @see OCA.Files.FileList#showMask
 		 */
 		hideMask: function() {
 			this.$el.find('.mask').remove();
@@ -1748,6 +1756,7 @@
 
 	/**
 	 * Sort comparators.
+	 * @class FileList.Comparators
 	 */
 	FileList.Comparators = {
 		/**

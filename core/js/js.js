@@ -5,6 +5,7 @@
  * To the end of config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
+
 var oc_debug;
 var oc_webroot;
 
@@ -90,7 +91,7 @@ function initL10N(app) {
 	}
 }
 /**
- * translate a string
+ * Translate a string
  * @param {string} app the id of the app for which to translate the string
  * @param {string} text the string to translate
  * @param [vars] FIXME
@@ -125,7 +126,7 @@ t.cache = {};
 t.plural_function = {};
 
 /**
- * translate a string
+ * Translate a string
  * @param {string} app the id of the app for which to translate the string
  * @param {string} text_singular the string to translate for exactly one object
  * @param {string} text_plural the string to translate for n objects
@@ -172,6 +173,7 @@ function fileDownloadPath(dir, file) {
 	return OC.filePath('files', 'ajax', 'download.php')+'?files='+encodeURIComponent(file)+'&dir='+encodeURIComponent(dir);
 }
 
+/** @namespace */
 var OC={
 	PERMISSION_CREATE:4,
 	PERMISSION_READ:1,
@@ -1287,6 +1289,7 @@ function relative_modified_date(timestamp) {
 
 /**
  * Utility functions
+ * @namespace
  */
 OC.Util = {
 	// TODO: remove original functions from global namespace
@@ -1513,6 +1516,7 @@ OC.set=function(name, value) {
 
 /**
  * Namespace for apps
+ * @namespace
  */
 window.OCA = {};
 
