@@ -60,7 +60,7 @@ class Controller {
 	public function loadAutoConfig($post) {
 		$autosetup_file = \OC::$SERVERROOT.'/config/autoconfig.php';
 		if( file_exists( $autosetup_file )) {
-			\OC_Log::write('core', 'Autoconfig file found, setting up owncloud...', \OC_Log::INFO);
+			\OC_Log::write('core', 'Autoconfig file found, setting up ownCloud...', \OC_Log::INFO);
 			$AUTOCONFIG = array();
 			include $autosetup_file;
 			$post = array_merge ($post, $AUTOCONFIG);
@@ -154,7 +154,7 @@ class Controller {
 			'hasMySQL' => $hasMySQL,
 			'hasPostgreSQL' => $hasPostgreSQL,
 			'hasOracle' => $hasOracle,
-			'hasMSSQL' => $hasMSSQL | $hasMSSQLDbo,
+			'hasMSSQL' => $hasMSSQL || $hasMSSQLDbo,
 			'databases' => $databases,
 			'directory' => $datadir,
 			'secureRNG' => \OC_Util::secureRNGAvailable(),
