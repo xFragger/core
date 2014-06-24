@@ -132,6 +132,38 @@ class Shared_Updater {
 		self::removeShare($params['path']);
 	}
 
+	static public function postShareHook($params) {
+		$shareWith = $params['shareWith'];
+		$shareType = $params['shareType'];
+
+		if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
+			self::correctUsersFolder($shareWith, '/');
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+			foreach (\OC_Group::usersInGroup($shareWith) as $user) {
+				self::correctUsersFolder($user, '/');
+			}
+		}
+	}
+
+	static public function postUnshareHook($params) {
+
+		if ($params['itemType'] !== 'file' && $params['itemType'] !== 'folder') {
+			return true;
+		}
+
+		$deletedShares = isset($params['deletedShares']) ? $params['deletedShares'] : array();
+
+		foreach ($deletedShares as $share) {
+			if ($share['shareType'] === \OCP\Share::SHARE_TYPE_GROUP) {
+				foreach (\OC_Group::usersInGroup($share['shareWith']) as $user) {
+					self::correctUsersFolder($user, dirname($share['fileTarget']));
+				}
+			} else {
+				self::correctUsersFolder($share['shareWith'], dirname($share['fileTarget']));
+			}
+		}
+	}
+
 	/**
 	 * clean up oc_share table from files which are no longer exists
 	 *

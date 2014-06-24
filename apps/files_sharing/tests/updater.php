@@ -104,6 +104,77 @@ class Test_Files_Sharing_Updater extends Test_Files_Sharing_Base {
 		if ($status === false) {
 			\OC_App::disable('files_trashbin');
 		}
+		// cleanup
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$result = \OCP\Share::unshare('folder', $fileinfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2);
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * if a file gets shared the etag for the recipients root should change
+	 */
+	function testShareFile() {
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
+
+		$beforeShare = \OC\Files\Filesystem::getFileInfo('');
+		$etagBeforeShare = $beforeShare->getEtag();
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$fileinfo = \OC\Files\Filesystem::getFileInfo($this->folder);
+		$result = \OCP\Share::shareItem('folder', $fileinfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
+		$this->assertTrue($result);
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
+
+		$afterShare = \OC\Files\Filesystem::getFileInfo('');
+		$etagAfterShare = $afterShare->getEtag();
+
+		$this->assertTrue(is_string($etagBeforeShare));
+		$this->assertTrue(is_string($etagAfterShare));
+		$this->assertTrue($etagBeforeShare !== $etagAfterShare);
+
+		// cleanup
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$result = \OCP\Share::unshare('folder', $fileinfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2);
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * if a file gets unshared by the owner the etag for the recipients root should change
+	 */
+	function testUnshareFile() {
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$fileinfo = \OC\Files\Filesystem::getFileInfo($this->folder);
+		$result = \OCP\Share::shareItem('folder', $fileinfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
+		$this->assertTrue($result);
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
+
+		$beforeUnshare = \OC\Files\Filesystem::getFileInfo('');
+		$etagBeforeUnshare = $beforeUnshare->getEtag();
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$result = \OCP\Share::unshare('folder', $fileinfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2);
+		$this->assertTrue($result);
+
+		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
+
+		$afterUnshare = \OC\Files\Filesystem::getFileInfo('');
+		$etagAfterUnshare = $afterUnshare->getEtag();
+
+		$this->assertTrue(is_string($etagBeforeUnshare));
+		$this->assertTrue(is_string($etagAfterUnshare));
+		$this->assertTrue($etagBeforeUnshare !== $etagAfterUnshare);
+
+	}
+
+	/**
+	 * if a file gets unshared from self the etag for the recipients root should change
+	 */
+	function testUnshareFromSelfFile() {
+		//TODO implement test
+		$this->assertTrue(true);
 	}
 
 }
