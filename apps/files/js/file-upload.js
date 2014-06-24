@@ -415,13 +415,14 @@ OC.Upload = {
 						fu._trigger('fail', e, data);
 					} else { // Successful upload
 					  // Checking that the uploaded file is the last one
-            if (data.files[0] == data.originalFiles[data.originalFiles.length - 1]) {
+            if (data.files[0] == data.originalFiles[data.originalFiles.length - 1] 
+                && result[0].directory == "\/") {
               var elem = FileList.findFileEl(data.files[0]["name"]);
               var elemOffset;
               
               // Displays the new element in the FileList
               while((elemOffset = elem.offset()) === undefined) {
-                FileList._nextPage(false);
+                FileList._nextPage(true);
                 elem = FileList.findFileEl(data.files[0]["name"]);
               }
               
